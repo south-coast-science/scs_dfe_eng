@@ -106,11 +106,11 @@ class OPCN3(AlphasenseOPC):
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def __init__(self, interface, spi_bus, spi_device):
+    def __init__(self, interface, dev_path):
         """
         Constructor
         """
-        super().__init__(interface, spi_bus, spi_device, self.__SPI_MODE, self.__SPI_CLOCK)
+        super().__init__(interface, dev_path, self.__SPI_MODE, self.__SPI_CLOCK)
 
 
     # ----------------------------------------------------------------------------------------------------------------

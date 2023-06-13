@@ -19,6 +19,7 @@ $GNGLL,5049.38023,N,00007.38608,W,103953.00,A,D*6D
 
 import logging
 import sys
+import time
 
 from scs_core.position.gps_datum import GPSDatum
 
@@ -73,57 +74,59 @@ try:
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    print("reports...")
+    while True:
+        print("reports...")
 
-    gga = gps.report(GPGGA)
-    print("GGA: %s" % gga)
-    print("-")
-
-    gll = gps.report(GPGLL)
-    print("GLL: %s" % gll)
-    print("-")
-
-    gsv = gps.report(GPGSV)
-    print("GSV: %s" % gsv)
-    print("-")
-
-    gsa = gps.report(GPGSA)
-    print("GSA: %s" % gsa)
-    print("-")
-
-    rmc = gps.report(GPRMC)
-    print("RMC: %s" % rmc)
-    print("-")
-
-    vtg = gps.report(GPVTG)
-    print("VTG: %s" % vtg)
-    print("=")
-
-
-    # ----------------------------------------------------------------------------------------------------------------
-
-    print("report all...")
-
-    msgs = gps.report_all()
-
-    for msg in msgs:
-        print(msg)
+        gga = gps.report(GPGGA)
+        print("GGA: %s" % gga)
         print("-")
 
-    print("=")
+        gll = gps.report(GPGLL)
+        print("GLL: %s" % gll)
+        print("-")
+
+        gsv = gps.report(GPGSV)
+        print("GSV: %s" % gsv)
+        print("-")
+
+        gsa = gps.report(GPGSA)
+        print("GSA: %s" % gsa)
+        print("-")
+
+        rmc = gps.report(GPRMC)
+        print("RMC: %s" % rmc)
+        print("-")
+
+        vtg = gps.report(GPVTG)
+        print("VTG: %s" % vtg)
+        print("=")
 
 
-    # ----------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------
 
-    if rmc is not None:
-        print("RMC position: %s, %s  time: %s" % (rmc.loc.deg_lat(), rmc.loc.deg_lng(), rmc.datetime.as_iso8601()))
-        print("GGA position: %s, %s" % (gga.loc.deg_lat(), gga.loc.deg_lng()))
+        print("report all...")
 
-        location = GPSDatum.construct_from_gga(gga)
-        print("GGA location: %s" % str(location))
+        msgs = gps.report_all()
+
+        for msg in msgs:
+            print(msg)
+            print("-")
 
         print("=")
 
+
+        # ----------------------------------------------------------------------------------------------------------------
+
+        if rmc is not None:
+            print("RMC position: %s, %s  time: %s" % (rmc.loc.deg_lat(), rmc.loc.deg_lng(), rmc.datetime.as_iso8601()))
+            print("GGA position: %s, %s" % (gga.loc.deg_lat(), gga.loc.deg_lng()))
+
+            location = GPSDatum.construct_from_gga(gga)
+            print("GGA location: %s" % str(location))
+
+            print("=")
+
+        time.sleep(4)
 
 # ----------------------------------------------------------------------------------------------------------------
 

@@ -28,7 +28,7 @@ try:
     interface = interface_conf.interface()
 
     # OPC...
-    opc = OPCN3(interface, Host.opc_spi_bus(), Host.opc_spi_device())
+    opc = OPCN3(interface, Host.opc_spi_dev_path())
     print(opc)
     print("-")
 

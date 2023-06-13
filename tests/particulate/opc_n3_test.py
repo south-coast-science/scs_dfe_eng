@@ -10,8 +10,10 @@ import sys
 
 from scs_core.data.json import JSONify
 from scs_core.sync.interval_timer import IntervalTimer
+
 from scs_dfe.interface.interface_conf import InterfaceConf
 from scs_dfe.particulate.opc_n3.opc_n3 import OPCN3
+
 from scs_host.bus.i2c import I2C
 from scs_host.sys.host import Host
 
@@ -28,7 +30,7 @@ try:
     interface = interface_conf.interface()
 
     # OPC...
-    opc = OPCN3(interface, Host.opc_spi_bus(), Host.opc_spi_device())
+    opc = OPCN3(interface, Host.opc_spi_dev_path())
     print(opc)
     print("-")
 
@@ -76,8 +78,8 @@ try:
 
     timer = IntervalTimer(10.0)
 
-    print("clear histograms...")
-    opc.sample()                    # clear histograms and timer
+    print("clear histogram...")
+    opc.sample()                    # clear histogram and timer
     print("-")
 
     for _ in timer.range(3):
