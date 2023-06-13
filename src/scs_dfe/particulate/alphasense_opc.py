@@ -14,8 +14,6 @@ from scs_host.bus.spi import SPI
 
 
 # TODO: fix lock_name()
-# TODO: fix bus and address
-
 # --------------------------------------------------------------------------------------------------------------------
 
 class AlphasenseOPC(OPC, ABC):
@@ -37,13 +35,13 @@ class AlphasenseOPC(OPC, ABC):
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def __init__(self, interface, spi_bus, spi_device, spi_mode, spi_clock):
+    def __init__(self, interface, dev_path, spi_mode, spi_clock):
         """
         Constructor
         """
         super().__init__(interface)
 
-        self._spi = SPI(spi_bus, spi_device, spi_mode, spi_clock)
+        self._spi = SPI(dev_path, spi_mode, spi_clock)
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -71,13 +69,18 @@ class AlphasenseOPC(OPC, ABC):
     # ----------------------------------------------------------------------------------------------------------------
 
     @property
+    def dev_path(self):
+        return self._spi.dev_path
+
+
+    @property
     def bus(self):
-        return self._spi.bus
+        raise NotImplementedError
 
 
     @property
     def address(self):
-        return self._spi.device
+        raise NotImplementedError
 
 
     # ----------------------------------------------------------------------------------------------------------------

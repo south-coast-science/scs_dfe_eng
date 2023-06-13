@@ -11,7 +11,10 @@ import time
 
 from scs_core.data.json import JSONify
 from scs_core.sync.interval_timer import IntervalTimer
+
+from scs_dfe.interface.dfe.dfe import DFE
 from scs_dfe.particulate.sps_30.sps_30 import SPS30
+
 from scs_host.bus.i2c import I2C
 
 
@@ -20,7 +23,7 @@ from scs_host.bus.i2c import I2C
 try:
     I2C.Sensors.open()
 
-    opc = SPS30(True, I2C.Sensors.bus, SPS30.DEFAULT_ADDR)
+    opc = SPS30(DFE(), SPS30.DEFAULT_ADDR)
     print(opc)
     print("-")
 
