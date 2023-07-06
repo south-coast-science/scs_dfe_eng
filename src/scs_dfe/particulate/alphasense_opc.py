@@ -5,7 +5,7 @@ Created on 2 May 2019
 """
 
 from abc import ABC
-from subprocess import Popen, PIPE, DEVNULL
+from subprocess import Popen
 
 from scs_core.particulate.opc_datum import OPCDatum
 from scs_core.sys.logging import Logging
@@ -71,20 +71,22 @@ class AlphasenseOPC(OPC, ABC):
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def _set_spi_mode_always_on(self):            # should be used immediately after turning on the OPC power
-        self.__set_device_mode('always-on')
+    def _set_spi_mode_always_on(self):              # should be used immediately after turning on the OPC power
+        self.__set_device_mode('always-on')         # (BeagleBone only)
 
-    def _set_spi_mode_auto_enabled(self):         # should be used immediately before turning off the OPC power
-        self.__set_device_mode('auto-enabled')
+
+    def _set_spi_mode_auto_enabled(self):           # should be used immediately before turning off the OPC power
+        self.__set_device_mode('auto-enabled')      # (BeagleBone only)
+
 
     def __set_device_mode(self, mode):
-        self._logger.debug('set_device_mode: %s' % mode)
+        try:
+            self._logger.debug('set_device_mode: %s' % mode)
+            p = Popen(['spi-pm-ctrl', '--path', self.dev_path, '--set-device-mode', mode])
+            p.wait()
 
-        p = Popen(['spi-pm-ctrl', '--path', self.dev_path, '--set-device-mode', mode], stdout=DEVNULL, stderr=PIPE)
-        _, err = p.communicate()
-
-        if err:
-            self._logger.debug('set_device_mode: %s: %s' % (mode, err.decode()))
+        except FileNotFoundError:
+            self._logger.debug('set_device_mode: %s: spi-pm-ctrl not available' % mode)
 
 
     # ----------------------------------------------------------------------------------------------------------------

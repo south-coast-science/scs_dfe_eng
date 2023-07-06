@@ -90,11 +90,11 @@ class OPC(ABC):
     # ----------------------------------------------------------------------------------------------------------------
 
     def _set_spi_mode_always_on(self):            # should be used immediately after turning on the OPC power
-        pass
+        pass                                      # (BeagleBone only)
 
 
     def _set_spi_mode_auto_enabled(self):         # should be used immediately before turning off the OPC power
-        pass
+        pass                                      # (BeagleBone only)
 
 
     # ----------------------------------------------------------------------------------------------------------------
