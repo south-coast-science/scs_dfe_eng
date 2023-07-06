@@ -6,7 +6,8 @@ Created on 11 Jul 2017
 settings for OPCMonitor
 
 example JSON:
-{"model": "N3", "sample-period": 10, "restart-on-zeroes": true, "power-saving": false}
+{"model": "N3", "sample-period": 10, "restart-on-zeroes": true, "power-saving": false,
+"custom-dev-path": "/dev/spi/by-connector/H3"}
 """
 
 from scs_core.particulate.opc_conf import OPCConf as AbstractOPCConf
@@ -36,11 +37,11 @@ class OPCConf(AbstractOPCConf):
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def __init__(self, model, sample_period, restart_on_zeroes, power_saving, dev_path, name=None):
+    def __init__(self, model, sample_period, restart_on_zeroes, power_saving, custom_dev_path, name=None):
         """
         Constructor
         """
-        super().__init__(model, sample_period, restart_on_zeroes, power_saving, dev_path, name=name)
+        super().__init__(model, sample_period, restart_on_zeroes, power_saving, custom_dev_path, name=name)
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -87,6 +88,6 @@ class OPCConf(AbstractOPCConf):
 
     def __str__(self, *args, **kwargs):
         return "OPCConf(dfe):{name:%s, model:%s, sample_period:%s, restart_on_zeroes:%s, power_saving:%s, " \
-               "dev_path:%s}" %  \
+               "custom_dev_path:%s}" %  \
                (self.name, self.model, self.sample_period, self.restart_on_zeroes, self.power_saving,
-                self.dev_path)
+                self.custom_dev_path)
