@@ -77,13 +77,24 @@ class OPC(ABC):
 
     def power_on(self):
         self.__interface.power_opc(True)
-        self.__interface.power_ndir(True)               # TODO: OPCube work-around - remove!
+        self._set_spi_mode_always_on()
+
         time.sleep(self.boot_time())
 
 
     def power_off(self):
+        self._set_spi_mode_auto_enabled()
         self.__interface.power_opc(False)
-        self.__interface.power_ndir(False)              # TODO: OPCube work-around - remove!
+
+
+    # ----------------------------------------------------------------------------------------------------------------
+
+    def _set_spi_mode_always_on(self):            # should be used immediately after turning on the OPC power
+        pass
+
+
+    def _set_spi_mode_auto_enabled(self):         # should be used immediately before turning off the OPC power
+        pass
 
 
     # ----------------------------------------------------------------------------------------------------------------

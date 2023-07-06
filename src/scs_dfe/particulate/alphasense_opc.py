@@ -5,8 +5,10 @@ Created on 2 May 2019
 """
 
 from abc import ABC
+from subprocess import Popen, PIPE, DEVNULL
 
 from scs_core.particulate.opc_datum import OPCDatum
+from scs_core.sys.logging import Logging
 
 from scs_dfe.particulate.opc import OPC
 
@@ -42,6 +44,7 @@ class AlphasenseOPC(OPC, ABC):
         super().__init__(interface)
 
         self._spi = SPI(dev_path, spi_mode, spi_clock)
+        self._logger = Logging.getLogger()
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -64,6 +67,24 @@ class AlphasenseOPC(OPC, ABC):
 
     def data_ready(self):
         return True
+
+
+    # ----------------------------------------------------------------------------------------------------------------
+
+    def _set_spi_mode_always_on(self):            # should be used immediately after turning on the OPC power
+        self.__set_device_mode('always-on')
+
+    def _set_spi_mode_auto_enabled(self):         # should be used immediately before turning off the OPC power
+        self.__set_device_mode('auto-enabled')
+
+    def __set_device_mode(self, mode):
+        self._logger.debug('set_device_mode: %s' % mode)
+
+        p = Popen(['spi-pm-ctrl', '--path', self.dev_path, '--set-device-mode', mode], stdout=DEVNULL, stderr=PIPE)
+        _, err = p.communicate()
+
+        if err:
+            self._logger.debug('set_device_mode: %s: %s' % (mode, err.decode()))
 
 
     # ----------------------------------------------------------------------------------------------------------------
