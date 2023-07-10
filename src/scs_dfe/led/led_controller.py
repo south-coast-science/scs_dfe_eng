@@ -9,10 +9,9 @@ import time
 from collections import OrderedDict
 from multiprocessing import Manager
 
+from scs_core.led.led_state import LEDState
 from scs_core.sync.interval_timer import IntervalTimer
 from scs_core.sync.synchronised_process import SynchronisedProcess
-
-from scs_dfe.led.led_state import LEDState
 
 
 # --------------------------------------------------------------------------------------------------------------------

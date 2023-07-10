@@ -6,7 +6,8 @@ Created on 11 Jul 2017
 settings for OPCMonitor
 
 example JSON:
-{"model": "N3", "sample-period": 10, "restart-on-zeroes": true, "power-saving": false}
+{"model": "N3", "sample-period": 10, "restart-on-zeroes": true, "power-saving": false,
+"custom-dev-path": "/dev/spi/by-connector/H3"}
 """
 
 from scs_core.particulate.opc_conf import OPCConf as AbstractOPCConf
@@ -36,33 +37,33 @@ class OPCConf(AbstractOPCConf):
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def __init__(self, model, sample_period, restart_on_zeroes, power_saving, bus, address, name=None):
+    def __init__(self, model, sample_period, restart_on_zeroes, power_saving, custom_dev_path, name=None):
         """
         Constructor
         """
-        super().__init__(model, sample_period, restart_on_zeroes, power_saving, bus, address, name=name)
+        super().__init__(model, sample_period, restart_on_zeroes, power_saving, custom_dev_path, name=name)
 
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def opc_monitor(self, interface, host):
-        opc = self.opc(interface, host)
+    def opc_monitor(self, interface):
+        opc = self.opc(interface)
 
         return OPCMonitor(opc, self)
 
 
-    def opc(self, interface, host):
+    def opc(self, interface):
         if self.model == OPCN2.source():
-            return OPCN2(interface, self.opc_bus(host), self.opc_address(host))
+            return OPCN2(interface, self.dev_path)
 
         elif self.model == OPCN3.source():
-            return OPCN3(interface, self.opc_bus(host), self.opc_address(host))
+            return OPCN3(interface, self.dev_path)
 
         elif self.model == OPCR1.source():
-            return OPCR1(interface, self.opc_bus(host), self.opc_address(host))
+            return OPCR1(interface, self.dev_path)
 
         elif self.model == SPS30.source():
-            return SPS30(interface, self.opc_bus(host), SPS30.DEFAULT_ADDR)
+            return SPS30(interface, SPS30.DEFAULT_ADDR)
 
         raise ValueError('unknown model: %s' % self.model)
 
@@ -87,6 +88,6 @@ class OPCConf(AbstractOPCConf):
 
     def __str__(self, *args, **kwargs):
         return "OPCConf(dfe):{name:%s, model:%s, sample_period:%s, restart_on_zeroes:%s, power_saving:%s, " \
-               "bus:%s, address:%s}" %  \
+               "custom_dev_path:%s}" %  \
                (self.name, self.model, self.sample_period, self.restart_on_zeroes, self.power_saving,
-                self.bus, self.address)
+                self.custom_dev_path)

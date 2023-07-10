@@ -6,7 +6,10 @@ Created on 30 Dec 2016
 @author: Bruno Beloff (bruno.beloff@southcoastscience.com)
 """
 
+import logging
 import sys
+
+from scs_core.position.gps_datum import GPSDatum
 
 from scs_core.position.nmea.gpgga import GPGGA
 from scs_core.position.nmea.gpgll import GPGLL
@@ -15,7 +18,7 @@ from scs_core.position.nmea.gpgsv import GPGSV
 from scs_core.position.nmea.gprmc import GPRMC
 from scs_core.position.nmea.gpvtg import GPVTG
 
-from scs_core.position.gps_datum import GPSDatum
+from scs_core.sys.logging import Logging
 
 from scs_dfe.gps.pam_7q import PAM7Q
 from scs_dfe.interface.interface_conf import InterfaceConf
@@ -25,6 +28,9 @@ from scs_host.sys.host import Host
 
 
 # --------------------------------------------------------------------------------------------------------------------
+
+Logging.config('pam_7q_test', level=logging.DEBUG)
+logger = Logging.getLogger()
 
 I2C.Utilities.open()
 
@@ -36,7 +42,7 @@ interface = conf.interface()
 print(interface)
 print("-")
 
-gps = PAM7Q(interface, Host.gps_device(), True)
+gps = PAM7Q(interface, Host.gps_device())
 print(gps)
 print("-")
 
@@ -106,11 +112,10 @@ try:
         print("=")
 
 
+# ----------------------------------------------------------------------------------------------------------------
+
 except KeyboardInterrupt:
-    print("pamq7_test: KeyboardInterrupt", file=sys.stderr)
-
-
-    # ----------------------------------------------------------------------------------------------------------------
+    print(file=sys.stderr)
 
 finally:
     print("close...")

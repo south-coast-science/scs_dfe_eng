@@ -27,7 +27,7 @@ class Interface(ABC):
         afe_calib = AFECalib.load(host)
 
         if afe_calib is None:
-            return None
+            return []
 
         afe_baseline = AFEBaseline.load(host, skeleton=True)
         sensors = afe_calib.sensors(afe_baseline)

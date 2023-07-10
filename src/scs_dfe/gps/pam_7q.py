@@ -15,8 +15,6 @@ $GPGSV,2,1,08,06,66,247,39,07,24,164,47,09,,,33,17,04,214,39*48
 $GPGSV,2,2,08,19,15,227,50,23,57,066,33,24,,,30,26,,,29*76
 """
 
-import sys
-
 from scs_core.position.nmea.gpgga import GPGGA
 from scs_core.position.nmea.gpgll import GPGLL
 from scs_core.position.nmea.gpgsa import GPGSA
@@ -72,8 +70,8 @@ class PAM7Q(GPS):
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def __init__(self, interface, uart, verbose=False):
-        super().__init__(interface, uart, verbose)
+    def __init__(self, interface, uart):
+        super().__init__(interface, uart)
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -128,10 +126,7 @@ class PAM7Q(GPS):
         while True:
             try:
                 line = self._serial.read_line(eol=self.__EOL, timeout=self.__SERIAL_COMMS_TIMEOUT)
-
-                if self._verbose:
-                    print("sentence:[%s]" % line, file=sys.stderr)
-                    sys.stderr.flush()
+                self._logger.debug("sentence:[%s]" % line)
 
                 return NMEAReport.construct(line)
 

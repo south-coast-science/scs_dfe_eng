@@ -55,7 +55,7 @@ class DS1338(object):
 
             # use 24 hour...
             hours = cls.__read_reg(cls.__REG_HOURS)
-            hours = hours & ~cls.__HOURS_MASK_24_HOUR
+            hours &= ~cls.__HOURS_MASK_24_HOUR
 
             cls.__write_reg(cls.__REG_HOURS, hours)
 

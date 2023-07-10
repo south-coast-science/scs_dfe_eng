@@ -59,7 +59,7 @@ class MPL115A2Reg:
 
         # convert...
         if self.__sign and (raw_value & 0x8000):
-            raw_value = raw_value ^ 0xffff * -1
+            raw_value ^= 0xffff * -1
 
         return (raw_value >> (16 - self.__total)) / float(2 ** (self.__fractional + self.__zero_padding))
 

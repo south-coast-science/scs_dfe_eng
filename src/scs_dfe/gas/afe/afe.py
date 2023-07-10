@@ -12,12 +12,10 @@ otherwise the NO2 cross-sensitivity concentration will not be found.
 import time
 
 from scs_core.data.str import Str
-
 from scs_core.gas.afe.afe_datum import AFEDatum
 
 from scs_dfe.gas.afe.ads1115 import ADS1115
 from scs_dfe.gas.afe.mcp342x import MCP342X
-
 from scs_dfe.gas.gas_sensor_interface import GasSensorInterface
 
 
@@ -59,19 +57,19 @@ class AFE(GasSensorInterface):
         self.__pt1000 = pt1000
         self.__sensors = sensors
 
-        self.__wrk_adc = ADS1115(ADS1115.ADDR_WRK, AFE.__RATE)
-        self.__aux_adc = ADS1115(ADS1115.ADDR_AUX, AFE.__RATE)
+        self.__wrk_adc = None if not sensors else ADS1115(ADS1115.ADDR_WRK, AFE.__RATE)
+        self.__aux_adc = None if not sensors else ADS1115(ADS1115.ADDR_AUX, AFE.__RATE) if sensors else None
 
         self.__pt1000_adc = None if pt1000 is None else interface.pt1000_adc(MCP342X.GAIN_4, MCP342X.RATE_15)
 
-        self.__tconv = self.__wrk_adc.tconv
+        self.__tconv = None if self.__wrk_adc is None else self.__wrk_adc.tconv
 
 
     # ----------------------------------------------------------------------------------------------------------------
     # business methods...
 
     def adc_versions(self):
-        return ('ADS1115', )
+        return tuple('ADS1115', )
 
 
     def sample(self, sht_datum=None):

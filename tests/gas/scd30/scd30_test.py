@@ -28,7 +28,7 @@ sampling_interval = 3
 try:
     I2C.Sensors.open()
 
-    baseline = SCD30Baseline.load(Host)
+    baseline = SCD30Baseline.load(Host, skeleton=True)
     print(baseline)
 
     scd30 = SCD30(baseline)
@@ -36,11 +36,13 @@ try:
 
     print("-", file=sys.stderr)
 
-    # scd30.reset()
-
 
     # ----------------------------------------------------------------------------------------------------------------
     # scd30...
+
+    # TODO: power to gases
+
+    # scd30.reset()
 
     firmware = scd30.get_firmware_version()
     print("firmware: %s" % str(firmware), file=sys.stderr)

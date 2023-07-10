@@ -14,8 +14,10 @@ import sys
 from scs_core.data.json import JSONify
 from scs_core.sync.interval_timer import IntervalTimer
 
+from scs_dfe.interface.dfe.dfe import DFE
+
 from scs_dfe.particulate.opc_conf import OPCConf
-from scs_dfe.particulate.opc_n2.opc_n2 import OPCN2
+from scs_dfe.particulate.opc_n3.opc_n3 import OPCN3
 from scs_dfe.particulate.opc_monitor import OPCMonitor
 
 from scs_host.bus.i2c import I2C
@@ -35,7 +37,7 @@ if __name__ == '__main__':
     try:
         I2C.Sensors.open()
 
-        monitor = OPCMonitor(OPCN2(False, Host.opc_spi_bus(), Host.opc_spi_device()), conf)
+        monitor = OPCMonitor(OPCN3(DFE(), Host.opc_spi_dev_path()), conf)
         print(monitor)
         print("-")
 

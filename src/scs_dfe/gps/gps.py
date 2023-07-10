@@ -8,6 +8,8 @@ import time
 
 from abc import ABC, abstractmethod
 
+from scs_core.sys.logging import Logging
+
 from scs_host.sys.host_serial import HostSerial
 
 
@@ -46,14 +48,14 @@ class GPS(ABC):
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def __init__(self, interface, uart, verbose=False):
+    def __init__(self, interface, uart):
         """
         Constructor
         """
         self.__interface = interface
 
         self._serial = HostSerial(uart, self.baud_rate())
-        self._verbose = verbose
+        self._logger = Logging.getLogger()
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -92,6 +94,6 @@ class GPS(ABC):
     # ----------------------------------------------------------------------------------------------------------------
 
     def __str__(self, *args, **kwargs):
-        return self.__class__.__name__ + ":{interface:%s, serial:%s, verbose:%s}" % \
-               (self.__interface, self._serial, self._verbose)
+        return self.__class__.__name__ + ":{interface:%s, serial:%s}" % \
+               (self.__interface, self._serial)
 

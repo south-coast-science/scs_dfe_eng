@@ -30,7 +30,7 @@ try:
     interface = interface_conf.interface()
 
     # OPC...
-    opc = OPCN3(interface, Host.opc_spi_bus(), Host.opc_spi_device())
+    opc = OPCN3(interface, Host.opc_spi_dev_path())
     print(opc)
     print("-")
 
@@ -78,8 +78,8 @@ try:
 
     timer = IntervalTimer(10.0)
 
-    print("clear histograms...")
-    opc.sample()                    # clear histograms and timer
+    print("clear histogram...")
+    opc.sample()                    # clear histogram and timer
     print("-")
 
     for _ in timer.range(3):
@@ -89,10 +89,10 @@ try:
         sys.stdout.flush()
 
 except KeyboardInterrupt:
-    print("opc_n3_test: KeyboardInterrupt", file=sys.stderr)
+    print(file=sys.stderr)
 
 except ValueError as ex:
-    print(ex)
+    print(repr(ex))
 
 finally:
     if opc:

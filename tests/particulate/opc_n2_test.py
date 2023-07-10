@@ -31,7 +31,7 @@ try:
     interface = interface_conf.interface()
 
     # OPC...
-    opc = OPCN2(interface, Host.opc_spi_bus(), Host.opc_spi_device())
+    opc = OPCN2(interface, Host.opc_spi_dev_path())
     print(opc)
     print("-")
 
@@ -75,7 +75,7 @@ try:
         sys.stdout.flush()
 
 except KeyboardInterrupt:
-    print("opc_n2_test: KeyboardInterrupt", file=sys.stderr)
+    print(file=sys.stderr)
 
 finally:
     print("off...")

@@ -22,8 +22,6 @@ $GLGSV,3,2,09,78,24,073,,79,07,121,,83,06,176,,84,53,215,*6A
 $GLGSV,3,3,09,85,43,314,*50
 """
 
-import sys
-
 from scs_core.position.nmea.gpgga import GPGGA
 from scs_core.position.nmea.gpgll import GPGLL
 from scs_core.position.nmea.gpgsa import GPGSA
@@ -79,8 +77,8 @@ class SAMM8Q(GPS):
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def __init__(self, interface, uart, verbose=False):
-        super().__init__(interface, uart, verbose)
+    def __init__(self, interface, uart):
+        super().__init__(interface, uart)
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -119,10 +117,7 @@ class SAMM8Q(GPS):
         while True:
             try:
                 line = self._serial.read_line(eol=self.__EOL, timeout=self.__SERIAL_COMMS_TIMEOUT)
-
-                if self._verbose:
-                    print("sentence:[%s]" % line, file=sys.stderr)
-                    sys.stderr.flush()
+                self._logger.debug("sentence:[%s]" % line)
 
                 return NMEAReport.construct(line)
 

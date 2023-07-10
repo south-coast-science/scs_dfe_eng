@@ -29,7 +29,7 @@ class PressureConf(AbstractPressureConf):
 
     @classmethod
     def models(cls):
-        return [ICP10101.NAME, MPL115A2.NAME]
+        return ICP10101.NAME, MPL115A2.NAME
 
 
     # ----------------------------------------------------------------------------------------------------------------

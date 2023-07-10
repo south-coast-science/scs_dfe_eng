@@ -4,7 +4,7 @@ Created on 31 Mar 2020
 @author: Bruno Beloff (bruno.beloff@southcoastscience.com)
 """
 
-from scs_dfe.led.led import LED
+from scs_core.led.led import LED
 
 
 # --------------------------------------------------------------------------------------------------------------------

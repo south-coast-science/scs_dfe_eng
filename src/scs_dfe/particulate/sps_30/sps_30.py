@@ -150,13 +150,12 @@ class SPS30(OPC):
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def __init__(self, interface, i2c_bus, i2c_addr):
+    def __init__(self, interface, i2c_addr):
         """
         Constructor
         """
         super().__init__(interface)
 
-        self.__i2c_bus = i2c_bus
         self.__i2c_addr = i2c_addr
 
 
@@ -267,8 +266,13 @@ class SPS30(OPC):
     # ----------------------------------------------------------------------------------------------------------------
 
     @property
+    def dev_path(self):
+        raise NotImplementedError
+
+
+    @property
     def bus(self):
-        return self.__i2c_bus
+        return I2C.Sensors.bus
 
 
     @property
@@ -280,7 +284,7 @@ class SPS30(OPC):
 
     @property
     def lock_name(self):
-        return self.__class__.__name__ + '-' + str(self.__i2c_bus) + '-' + ("0x%02x" % self.__i2c_addr)
+        return self.__class__.__name__ + '-' + str(I2C.Sensors.bus) + '-' + ("0x%02x" % self.__i2c_addr)
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -327,5 +331,5 @@ class SPS30(OPC):
     # ----------------------------------------------------------------------------------------------------------------
 
     def __str__(self, *args, **kwargs):
-        return "SPS30:{interface:%s, i2c_bus:%d i2c_addr:0x%02x}" % \
-               (self.interface, self.__i2c_bus, self.__i2c_addr)
+        return "SPS30:{interface:%s, i2c_addr:0x%02x}" % \
+               (self.interface, self.__i2c_addr)

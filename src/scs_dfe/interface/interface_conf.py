@@ -33,9 +33,9 @@ class InterfaceConf(AbstractInterfaceConf):
 
     __MODELS = [
         'DFE',                      # Praxis/Urban, ignoring Pt1000
-        'DFE/ISI',                  # Praxis/Urban, using DSI board
         'DFE/0x68',                 # Alpha Pi Eng, Alpha BB Eng without RTC
         'DFE/0x69',                 # Alpha BB Eng with RTC
+        'DFE/ISI',                  # Praxis/Urban, using DSI board
         'OPCubeT1',                 # Praxis/Cube controller (type 1)
         'PZHBt0',                   # Pi Zero Header Breakout (no microcontroller)
         'PZHBt1',                   # Pi Zero Header Breakout (type 1)
@@ -78,14 +78,14 @@ class InterfaceConf(AbstractInterfaceConf):
         if self.model == 'DFE':
             return DFE()
 
-        if self.model == 'DFE/ISI':
-            return ISIDFE()
-
         if self.model == 'DFE/0x68':
             return DFE(pt1000_addr=0x68)
 
         if self.model == 'DFE/0x69':
             return DFE(pt1000_addr=0x69)
+
+        if self.model == 'DFE/ISI':
+            return ISIDFE()
 
         if self.model == 'OPCubeT1':
             return OPCube(OPCubeMCUt1(OPCubeMCUt1.DEFAULT_ADDR))

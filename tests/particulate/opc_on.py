@@ -19,14 +19,14 @@ from scs_host.sys.host import Host
 try:
     I2C.Sensors.open()
 
-    opc = OPCN3(False, Host.opc_spi_bus(), Host.opc_spi_device())
+    opc = OPCN3(False, Host.opc_spi_dev_path())
     print(opc)
     print("-")
 
     opc.power_on()
 
 except KeyboardInterrupt:
-    print("opc_on: KeyboardInterrupt", file=sys.stderr)
+    print(file=sys.stderr)
 
 finally:
     I2C.Sensors.close()

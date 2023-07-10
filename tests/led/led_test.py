@@ -9,8 +9,9 @@ Created on 22 Dec 2018
 import sys
 import time
 
+from scs_core.led.led import LED
+
 from scs_dfe.led.io_led import IOLED
-from scs_dfe.led.led import LED
 
 from scs_host.bus.i2c import I2C
 

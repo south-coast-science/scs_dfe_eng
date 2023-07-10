@@ -15,14 +15,18 @@ from scs_host.sys.host import Host
 
 # --------------------------------------------------------------------------------------------------------------------
 
-conf = OPCConf("N2", 10, True, False, 0, 1)
+conf = OPCConf("N3", 10, True, False, None)
 print(conf)
 print("-")
 
 print(JSONify.dumps(conf.as_json()))
 print("-")
 
-conf.save(Host)
+# conf.save(Host)
 conf = OPCConf.load(Host)
 print(conf)
+
+print("custom_dev_path: %s" % conf.custom_dev_path)
+print("default_dev_path: %s" % conf.default_dev_path)
+print("dev_path: %s" % conf.dev_path)
 

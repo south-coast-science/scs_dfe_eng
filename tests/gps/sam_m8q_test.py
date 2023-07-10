@@ -17,7 +17,11 @@ $GLGSV,1,1,00*65
 $GNGLL,5049.38023,N,00007.38608,W,103953.00,A,D*6D
 """
 
+import logging
 import sys
+import time
+
+from scs_core.position.gps_datum import GPSDatum
 
 from scs_core.position.nmea.gpgga import GPGGA
 from scs_core.position.nmea.gpgll import GPGLL
@@ -26,7 +30,7 @@ from scs_core.position.nmea.gpgsv import GPGSV
 from scs_core.position.nmea.gprmc import GPRMC
 from scs_core.position.nmea.gpvtg import GPVTG
 
-from scs_core.position.gps_datum import GPSDatum
+from scs_core.sys.logging import Logging
 
 from scs_dfe.gps.sam_m8q import SAMM8Q
 from scs_dfe.interface.interface_conf import InterfaceConf
@@ -36,6 +40,9 @@ from scs_host.sys.host import Host
 
 
 # --------------------------------------------------------------------------------------------------------------------
+
+Logging.config('sam_m8q_test', level=logging.DEBUG)
+logger = Logging.getLogger()
 
 I2C.Utilities.open()
 
@@ -48,7 +55,7 @@ print(interface)
 print("-")
 
 
-gps = SAMM8Q(interface, Host.gps_device(), True)
+gps = SAMM8Q(interface, Host.gps_device())
 print(gps)
 print("-")
 
@@ -67,63 +74,64 @@ try:
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    print("reports...")
+    while True:
+        print("reports...")
 
-    gga = gps.report(GPGGA)
-    print("GGA: %s" % gga)
-    print("-")
-
-    gll = gps.report(GPGLL)
-    print("GLL: %s" % gll)
-    print("-")
-
-    gsv = gps.report(GPGSV)
-    print("GSV: %s" % gsv)
-    print("-")
-
-    gsa = gps.report(GPGSA)
-    print("GSA: %s" % gsa)
-    print("-")
-
-    rmc = gps.report(GPRMC)
-    print("RMC: %s" % rmc)
-    print("-")
-
-    vtg = gps.report(GPVTG)
-    print("VTG: %s" % vtg)
-    print("=")
-
-
-    # ----------------------------------------------------------------------------------------------------------------
-
-    print("report all...")
-
-    msgs = gps.report_all()
-
-    for msg in msgs:
-        print(msg)
+        gga = gps.report(GPGGA)
+        print("GGA: %s" % gga)
         print("-")
 
-    print("=")
+        gll = gps.report(GPGLL)
+        print("GLL: %s" % gll)
+        print("-")
+
+        gsv = gps.report(GPGSV)
+        print("GSV: %s" % gsv)
+        print("-")
+
+        gsa = gps.report(GPGSA)
+        print("GSA: %s" % gsa)
+        print("-")
+
+        rmc = gps.report(GPRMC)
+        print("RMC: %s" % rmc)
+        print("-")
+
+        vtg = gps.report(GPVTG)
+        print("VTG: %s" % vtg)
+        print("=")
 
 
-    # ----------------------------------------------------------------------------------------------------------------
+        # ----------------------------------------------------------------------------------------------------------------
 
-    if rmc is not None:
-        print("RMC position: %s, %s  time: %s" % (rmc.loc.deg_lat(), rmc.loc.deg_lng(), rmc.datetime.as_iso8601()))
-        print("GGA position: %s, %s" % (gga.loc.deg_lat(), gga.loc.deg_lng()))
+        print("report all...")
 
-        location = GPSDatum.construct_from_gga(gga)
-        print("GGA location: %s" % str(location))
+        msgs = gps.report_all()
+
+        for msg in msgs:
+            print(msg)
+            print("-")
 
         print("=")
 
 
+        # ----------------------------------------------------------------------------------------------------------------
+
+        if rmc is not None:
+            print("RMC position: %s, %s  time: %s" % (rmc.loc.deg_lat(), rmc.loc.deg_lng(), rmc.datetime.as_iso8601()))
+            print("GGA position: %s, %s" % (gga.loc.deg_lat(), gga.loc.deg_lng()))
+
+            location = GPSDatum.construct_from_gga(gga)
+            print("GGA location: %s" % str(location))
+
+            print("=")
+
+        time.sleep(4)
+
+# ----------------------------------------------------------------------------------------------------------------
+
 except KeyboardInterrupt:
-    print("sam_m8q_test: KeyboardInterrupt", file=sys.stderr)
-
-
-    # ----------------------------------------------------------------------------------------------------------------
+    print(file=sys.stderr)
 
 finally:
     print("close...")
