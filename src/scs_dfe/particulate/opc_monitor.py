@@ -95,7 +95,7 @@ class OPCMonitor(SynchronisedProcess):
             while timer.true():
                 try:
                     if not self.__opc.data_ready():
-                        self.__logger.error("run: data not ready.")
+                        self.__logger.error("data not ready.")
                         self.__empty()
                         continue
 
@@ -108,7 +108,7 @@ class OPCMonitor(SynchronisedProcess):
                             raise ValueError("zero reading")
 
                         if not self.__first_reading:
-                            self.__logger.error("run: zero reading %d of %d" %
+                            self.__logger.error("zero reading %d of %d" %
                                                 (self.__zero_count, max_permitted_zero_readings))
 
                     else:
@@ -119,16 +119,16 @@ class OPCMonitor(SynchronisedProcess):
                             datum.as_list(self._value)
 
                 except LockTimeout as ex:
-                    self.__logger.error("run: %s" % ex)
+                    self.__logger.error(repr(ex))
                     self.__empty()
 
                 except ValueError as ex:
-                    self.__logger.error("run: %s" % ex)
+                    self.__logger.error(repr(ex))
                     self.__empty()
                     self.__power_cycle()
 
                 except OSError as ex:
-                    self.__logger.error("run: %s" % ex)
+                    self.__logger.error(repr(ex))
                     self.__error(self.__FATAL_ERROR)
                     break
 
