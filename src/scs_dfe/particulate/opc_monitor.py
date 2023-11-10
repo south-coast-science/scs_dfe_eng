@@ -5,7 +5,6 @@ Created on 9 Jul 2017
 """
 
 import copy
-import sys
 import time
 
 from collections import OrderedDict
@@ -13,6 +12,8 @@ from multiprocessing import Manager
 
 from scs_core.sync.interval_timer import IntervalTimer
 from scs_core.sync.synchronised_process import SynchronisedProcess
+
+from scs_core.sys.logging import Logging
 
 from scs_dfe.particulate.opc import OPC
 
@@ -34,6 +35,9 @@ class OPCMonitor(SynchronisedProcess):
         """
         Constructor
         """
+        self.__logger = Logging.getLogger()
+        self.__logging_specification = Logging.specification()
+
         manager = Manager()
 
         SynchronisedProcess.__init__(self, manager.list())
@@ -75,6 +79,9 @@ class OPCMonitor(SynchronisedProcess):
 
 
     def run(self):
+        Logging.replicate(self.__logging_specification)
+        self.__logger = Logging.getLogger()
+
         try:
             # clean...
             self.__opc.clean()
@@ -88,9 +95,7 @@ class OPCMonitor(SynchronisedProcess):
             while timer.true():
                 try:
                     if not self.__opc.data_ready():
-                        print("OPCMonitor.run: data not ready.", file=sys.stderr)
-                        sys.stderr.flush()
-
+                        self.__logger.error("run: data not ready.")
                         self.__empty()
                         continue
 
@@ -103,9 +108,8 @@ class OPCMonitor(SynchronisedProcess):
                             raise ValueError("zero reading")
 
                         if not self.__first_reading:
-                            print("OPCMonitor.run: zero reading %d of %d" %
-                                  (self.__zero_count, max_permitted_zero_readings), file=sys.stderr)
-                            sys.stderr.flush()
+                            self.__logger.error("run: zero reading %d of %d" %
+                                                (self.__zero_count, max_permitted_zero_readings))
 
                     else:
                         self.__zero_count = 0
@@ -115,22 +119,16 @@ class OPCMonitor(SynchronisedProcess):
                             datum.as_list(self._value)
 
                 except LockTimeout as ex:
-                    print("OPCMonitor.run: %s" % ex, file=sys.stderr)
-                    sys.stderr.flush()
-
+                    self.__logger.error("run: %s" % ex)
                     self.__empty()
 
                 except ValueError as ex:
-                    print("OPCMonitor.run: %s" % ex, file=sys.stderr)
-                    sys.stderr.flush()
-
+                    self.__logger.error("run: %s" % ex)
                     self.__empty()
                     self.__power_cycle()
 
                 except OSError as ex:
-                    print("OPCMonitor.run: %s" % ex, file=sys.stderr)
-                    sys.stderr.flush()
-
+                    self.__logger.error("run: %s" % ex)
                     self.__error(self.__FATAL_ERROR)
                     break
 
@@ -156,8 +154,7 @@ class OPCMonitor(SynchronisedProcess):
 
 
     def __power_cycle(self):
-        print("OPCMonitor: power cycle", file=sys.stderr)
-        sys.stderr.flush()
+        self.__logger.error("power cycle")
 
         # noinspection PyBroadException
 
