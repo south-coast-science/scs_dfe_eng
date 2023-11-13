@@ -17,6 +17,8 @@ from scs_core.position.nmea.gpgga import GPGGA
 from scs_core.sync.interval_timer import IntervalTimer
 from scs_core.sync.synchronised_process import SynchronisedProcess
 
+from scs_core.sys.logging import Logging
+
 
 # --------------------------------------------------------------------------------------------------------------------
 
@@ -38,6 +40,9 @@ class GPSMonitor(SynchronisedProcess):
         """
         Constructor
         """
+        self.__logger = Logging.getLogger()
+        self.__logging_specification = Logging.specification()
+
         manager = Manager()
 
         SynchronisedProcess.__init__(self, manager.list())
@@ -78,6 +83,8 @@ class GPSMonitor(SynchronisedProcess):
 
 
     def run(self):
+        Logging.replicate(self.__logging_specification)
+
         # default report...
         datum = GPSDatum.null_datum()
 
