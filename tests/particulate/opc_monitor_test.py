@@ -37,7 +37,7 @@ if __name__ == '__main__':
     try:
         I2C.Sensors.open()
 
-        monitor = OPCMonitor(OPCN3(DFE(), Host.opc_spi_dev_path()), conf)
+        monitor = OPCMonitor(Host, OPCN3(DFE(), Host.opc_spi_dev_path()), conf)
         print(monitor)
         print("-")
 

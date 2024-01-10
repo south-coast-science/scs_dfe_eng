@@ -46,10 +46,10 @@ class OPCConf(AbstractOPCConf):
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def opc_monitor(self, interface):
+    def opc_monitor(self, manager, interface):
         opc = self.opc(interface)
 
-        return OPCMonitor(opc, self)
+        return OPCMonitor(manager, opc, self)
 
 
     def opc(self, interface):
