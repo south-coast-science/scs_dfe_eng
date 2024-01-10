@@ -10,6 +10,8 @@ import time
 from collections import OrderedDict
 from multiprocessing import Manager
 
+from scs_core.particulate.opc_error_log import OPCErrorLog, OPCErrorLogEntry
+
 from scs_core.sync.interval_timer import IntervalTimer
 from scs_core.sync.synchronised_process import SynchronisedProcess
 
@@ -31,17 +33,16 @@ class OPCMonitor(SynchronisedProcess):
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def __init__(self, opc: OPC, conf):
+    def __init__(self, manager, opc: OPC, conf):
         """
         Constructor
         """
         self.__logger = Logging.getLogger()
         self.__logging_specification = Logging.specification()
 
-        manager = Manager()
+        SynchronisedProcess.__init__(self, Manager().list())
 
-        SynchronisedProcess.__init__(self, manager.list())
-
+        self.__manager = manager
         self.__opc = opc
         self.__conf = conf
 
@@ -125,7 +126,7 @@ class OPCMonitor(SynchronisedProcess):
                 except ValueError as ex:
                     self.__logger.error(repr(ex))
                     self.__empty()
-                    self.__power_cycle()
+                    self.__power_cycle(ex)
 
                 except OSError as ex:
                     self.__logger.error(repr(ex))
@@ -153,10 +154,10 @@ class OPCMonitor(SynchronisedProcess):
             del self._value[:]
 
 
-    def __power_cycle(self):
+    def __power_cycle(self, ex):
         self.__logger.error("power cycle")
 
-        # noinspection PyBroadException
+        OPCErrorLog.save_entry(self.__manager, OPCErrorLogEntry.construct(str(ex)), trim=True)
 
         try:
             # off...
@@ -172,8 +173,8 @@ class OPCMonitor(SynchronisedProcess):
             self.__first_reading = True
             self.__zero_count = 0
 
-        except Exception:
-            pass
+        except Exception as ex:
+            self.__logger.error("power cycle: %s" % repr(ex))
 
 
     # ----------------------------------------------------------------------------------------------------------------
