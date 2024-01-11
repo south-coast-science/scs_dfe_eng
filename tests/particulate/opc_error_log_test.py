@@ -22,8 +22,8 @@ if log:
     print("len: %s" % len(log))
     print("last_modified: %s" % log.last_modified)
 
-    print("trim... 5")
-    OPCErrorLog.trim(Host, 5)
+    print("trim... 10")
+    OPCErrorLog.trim(Host, 10)
 
     log = OPCErrorLog.load(Host)
     print("rows: %s" % OPCErrorLog.rows(Host))
