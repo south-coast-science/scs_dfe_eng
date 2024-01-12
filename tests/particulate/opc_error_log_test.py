@@ -7,7 +7,7 @@ Created on 9 Jan 2024
 """
 
 from scs_core.data.datetime import LocalizedDatetime
-from scs_core.particulate.opc_error_log import OPCErrorLog, OPCErrorLogEntry
+from scs_core.particulate.opc_error_log import OPCErrorLog
 
 from scs_host.sys.host import Host
 
@@ -39,7 +39,4 @@ print("-")
 rec = LocalizedDatetime.now()
 error = ValueError("checksum error")
 
-entry = OPCErrorLogEntry(rec, str(error))
-print("entry: %s" % entry)
-
-OPCErrorLog.save_entry(Host, entry, trim=True)
+OPCErrorLog.save_event(Host, str(error), trim=True)
