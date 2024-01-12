@@ -10,7 +10,7 @@ import time
 from collections import OrderedDict
 from multiprocessing import Manager
 
-from scs_core.particulate.opc_error_log import OPCErrorLog, OPCErrorLogEntry
+from scs_core.particulate.opc_error_log import OPCErrorLog
 
 from scs_core.sync.interval_timer import IntervalTimer
 from scs_core.sync.synchronised_process import SynchronisedProcess
@@ -157,7 +157,7 @@ class OPCMonitor(SynchronisedProcess):
     def __power_cycle(self, ex):
         self.__logger.error("power cycle")
 
-        OPCErrorLog.save_entry(self.__manager, OPCErrorLogEntry.construct(str(ex)), trim=True)
+        OPCErrorLog.save_event(self.__manager, str(ex), trim=True)
 
         try:
             # off...
