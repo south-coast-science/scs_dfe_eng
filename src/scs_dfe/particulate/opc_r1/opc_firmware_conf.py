@@ -140,7 +140,7 @@ class OPCFirmwareConf(JSONReport):
                self.laser_dac == other.laser_dac and \
                self.bin_weighting_index == other.bin_weighting_index
 
-        except AttributeError:
+        except (TypeError, AttributeError):
             return False
 
 

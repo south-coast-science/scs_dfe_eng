@@ -159,7 +159,7 @@ class OPCFirmwareConf(JSONReport):
                self.pvp == other.pvp and \
                self.bin_weighting_index == other.bin_weighting_index
 
-        except AttributeError:
+        except (TypeError, AttributeError):
             return False
 
 
