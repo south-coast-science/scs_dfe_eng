@@ -36,7 +36,7 @@ class InterfaceID(JSONable):
             return None
 
         # read...
-        file = open(field_path, "r")
+        file = open(field_path)
         content = file.readline()
         file.close()
 
