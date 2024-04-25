@@ -134,7 +134,7 @@ class PCA8574State(JSONReport):
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def as_json(self):
+    def as_json(self, **kwargs):
         jdict = OrderedDict()
 
         jdict['byte'] = "0x%02x" % self.__byte

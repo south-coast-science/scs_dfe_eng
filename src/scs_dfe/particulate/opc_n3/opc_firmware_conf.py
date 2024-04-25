@@ -201,7 +201,7 @@ class OPCFirmwareConf(JSONReport):
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def as_json(self):
+    def as_json(self, **kwargs):
         jdict = OrderedDict()
 
         jdict['bin-boundaries'] = self.bin_boundaries
