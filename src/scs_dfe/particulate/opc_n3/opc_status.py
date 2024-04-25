@@ -61,7 +61,7 @@ class OPCStatus(JSONable):
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def as_json(self):
+    def as_json(self, **kwargs):
         jdict = OrderedDict()
 
         jdict['fan-on'] = self.fan_on
