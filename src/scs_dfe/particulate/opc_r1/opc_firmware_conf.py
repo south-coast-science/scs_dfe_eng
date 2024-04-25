@@ -174,7 +174,7 @@ class OPCFirmwareConf(JSONReport):
 
     # ----------------------------------------------------------------------------------------------------------------
 
-    def as_json(self):
+    def as_json(self, **kwargs):
         jdict = OrderedDict()
 
         jdict['bin-boundaries'] = [round(value, 3) for value in self.bin_boundaries]
