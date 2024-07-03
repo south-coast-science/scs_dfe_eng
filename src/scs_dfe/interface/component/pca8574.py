@@ -104,7 +104,7 @@ class PCA8574State(JSONReport):
     @classmethod
     def init(cls):
         """
-        Establish the /tmp/southcoastscience/ root.
+        Establish the /dev/shm/southcoastscience/ root.
         Should be invoked level class load.
         """
         try:
