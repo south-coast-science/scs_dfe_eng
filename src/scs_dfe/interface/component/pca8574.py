@@ -102,21 +102,6 @@ class PCA8574State(JSONReport):
     # ----------------------------------------------------------------------------------------------------------------
 
     @classmethod
-    def init(cls):
-        """
-        Establish the /dev/shm/southcoastscience/ root.
-        Should be invoked level class load.
-        """
-        try:
-            os.makedirs(Host.tmp_dir())
-            os.chmod(Host.tmp_dir(), 0o777)
-        except FileExistsError:
-            pass
-
-
-    # ----------------------------------------------------------------------------------------------------------------
-
-    @classmethod
     def construct_from_jdict(cls, jdict, skeleton=False):
         byte = int(jdict.get('byte') if jdict else '0xff', 16)
 
