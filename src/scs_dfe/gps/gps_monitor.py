@@ -17,7 +17,10 @@ from scs_core.position.nmea.gpgga import GPGGA
 from scs_core.sync.interval_timer import IntervalTimer
 from scs_core.sync.synchronised_process import SynchronisedProcess
 
+from scs_core.sys.filesystem import Filesystem
 from scs_core.sys.logging import Logging
+
+from scs_host.sys.host import Host
 
 
 # --------------------------------------------------------------------------------------------------------------------
@@ -31,7 +34,7 @@ class GPSMonitor(SynchronisedProcess):
 
     @classmethod
     def construct(cls, gps, conf):
-        return cls(gps, conf.sample_interval, Average(conf.tally), conf.report_file, conf.debug)
+        return cls(gps, conf.sample_interval, Average(conf.tally), conf.report_file(Host), conf.debug)
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -77,6 +80,7 @@ class GPSMonitor(SynchronisedProcess):
             super().stop()
 
             self.__gps.close()
+            Filesystem.rm(self.__report_file)
 
         except (ConnectionError, KeyboardInterrupt, SystemExit):
             pass

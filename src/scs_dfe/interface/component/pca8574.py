@@ -83,7 +83,7 @@ class PCA8574(object):
         state = PCA8574State.load(os.path.join(self.__directory, self.__file))
 
         state.byte = byte
-        state.save(os.path.join(self.__directory, self.__file))
+        state.save(self.__file)
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -98,21 +98,6 @@ class PCA8574State(JSONReport):
     """
     classdocs
     """
-
-    # ----------------------------------------------------------------------------------------------------------------
-
-    @classmethod
-    def init(cls):
-        """
-        Establish the /tmp/southcoastscience/ root.
-        Should be invoked level class load.
-        """
-        try:
-            os.makedirs(Host.tmp_dir())
-            os.chmod(Host.tmp_dir(), 0o777)
-        except FileExistsError:
-            pass
-
 
     # ----------------------------------------------------------------------------------------------------------------
 
