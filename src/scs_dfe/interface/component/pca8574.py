@@ -83,7 +83,7 @@ class PCA8574(object):
         state = PCA8574State.load(os.path.join(self.__directory, self.__file))
 
         state.byte = byte
-        state.save(os.path.join(self.__directory, self.__file))
+        state.save(self.__file)
 
 
     # ----------------------------------------------------------------------------------------------------------------
