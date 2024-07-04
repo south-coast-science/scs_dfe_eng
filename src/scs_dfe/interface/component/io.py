@@ -31,7 +31,14 @@ class IO(object):
     __LOCK =                "DFE_IO"
     __LOCK_TIMEOUT =        2.0
 
+
+    # ----------------------------------------------------------------------------------------------------------------
+
     __FILENAME =            "dfe_io.json"
+
+    @classmethod
+    def filename(cls, manager):
+        return manager.tmp_file(cls.__FILENAME)
 
 
     # ----------------------------------------------------------------------------------------------------------------
@@ -49,7 +56,7 @@ class IO(object):
         """
         self.__active_high = active_high
 
-        self.__device = PCA8574.construct(IO.ADDR, Host.lock_dir(), self.__FILENAME)
+        self.__device = PCA8574.construct(IO.ADDR, Host.lock_dir(), self.filename(Host))
 
 
     # ----------------------------------------------------------------------------------------------------------------
