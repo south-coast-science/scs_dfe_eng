@@ -11,7 +11,6 @@ from collections import OrderedDict
 from scs_core.data.json import JSONReport
 
 from scs_host.bus.i2c import I2C
-from scs_host.sys.host import Host
 
 
 # --------------------------------------------------------------------------------------------------------------------
